@@ -1,0 +1,75 @@
+{
+  "format": 1,
+  "restore": {
+    "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj": {}
+  },
+  "projects": {
+    "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj",
+        "projectName": "tl2-tp8-2025-LucasFR-TH",
+        "projectPath": "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj",
+        "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
+        "outputPath": "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Data.SQLite": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.415/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
