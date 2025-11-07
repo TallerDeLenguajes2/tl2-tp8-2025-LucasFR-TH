@@ -215,4 +215,54 @@ public class PresupuestosRepository
             connection.Close();
         }
     }
+
+    public void Update(int id, Presupuesto presupuesto)
+    {
+        using var connection = new SqliteConnection(cadenaConexion);
+        connection.Open();
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            // Actualizar encabezado
+            var query = "UPDATE presupuestos SET nombreDestinatario = @nombre, fechaCreacion = @fecha WHERE idPresupuesto = @id";
+            var command = new SqliteCommand(query, connection, transaction);
+            command.Parameters.Add(new SqliteParameter("@nombre", presupuesto.nombreDestinatario));
+            command.Parameters.Add(new SqliteParameter("@fecha", presupuesto.fechaCreacion));
+            command.Parameters.Add(new SqliteParameter("@id", id));
+            command.ExecuteNonQuery();
+
+            // Eliminar detalles antiguos
+            query = "DELETE FROM presupuestoDetalle WHERE idPresupuesto = @id";
+            command = new SqliteCommand(query, connection, transaction);
+            command.Parameters.Add(new SqliteParameter("@id", id));
+            command.ExecuteNonQuery();
+
+            // Insertar nuevos detalles
+            if (presupuesto.detalle != null)
+            {
+                foreach (var detalle in presupuesto.detalle)
+                {
+                    query = @"INSERT INTO presupuestoDetalle (idPresupuesto, idProducto, cantidad) 
+                             VALUES (@idPresupuesto, @idProducto, @cantidad)";
+                    command = new SqliteCommand(query, connection, transaction);
+                    command.Parameters.Add(new SqliteParameter("@idPresupuesto", id));
+                    command.Parameters.Add(new SqliteParameter("@idProducto", detalle.producto.idProducto));
+                    command.Parameters.Add(new SqliteParameter("@cantidad", detalle.cantidad));
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            transaction.Commit();
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+            throw;
+        }
+        finally
+        {
+            connection.Close();
+        }
+    }
 }

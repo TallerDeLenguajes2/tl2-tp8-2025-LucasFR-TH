@@ -1,0 +1,55 @@
+@model espacioPresupuestos.Presupuesto
+
+@{
+    ViewData["Title"] = "Detalle del Presupuesto";
+}
+
+<div class="container mt-3">
+    <h2>Presupuesto #@Model.idPresupuesto</h2>
+    <p><strong>Destinatario:</strong> @Model.nombreDestinatario</p>
+    <p><strong>Fecha de creación:</strong> @Model.fechaCreacion.ToString("g")</p>
+
+    <h4>Productos</h4>
+    @if (Model.detalle == null || !Model.detalle.Any())
+    {
+        <div class="alert alert-info">No hay productos asociados a este presupuesto.</div>
+    }
+    else
+    {
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th class="text-end">Precio</th>
+                    <th class="text-end">Cantidad</th>
+                    <th class="text-end">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.detalle)
+                {
+                    if (d == null) { continue; }
+                    var prod = d.producto;
+                    <tr>
+                        <td>@(prod?.descripcion ?? "-")</td>
+                        <td class="text-end">@((prod != null) ? prod.precio.ToString("N2") : "-")</td>
+                        <td class="text-end">@d.cantidad</td>
+                        <td class="text-end">@((prod != null) ? (prod.precio * d.cantidad).ToString("N2") : "-")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-end">Total</th>
+                    <th class="text-end">@Model.MontoPresupuesto().ToString("N2")</th>
+                </tr>
+                <tr>
+                    <th colspan="3" class="text-end">Total con IVA (21%)</th>
+                    <th class="text-end">@Model.MontoPresupuestoConIVA().ToString("N2")</th>
+                </tr>
+            </tfoot>
+        </table>
+    }
+
+    <a asp-controller="Presupuestos" asp-action="Index" class="btn btn-secondary">Volver</a>
+</div>

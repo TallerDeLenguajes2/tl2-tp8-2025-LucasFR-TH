@@ -1,0 +1,72 @@
+@model espacioPresupuestos.Presupuesto
+
+@{
+    ViewData["Title"] = "Crear Presupuesto";
+    var productos = ViewBag.Productos as List<espacioProductos.Producto> ?? new List<espacioProductos.Producto>();
+}
+
+<div class="container mt-3">
+    <h2>Crear Presupuesto</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label class="form-label">Destinatario</label>
+            <input name="nombreDestinatario" class="form-control" />
+        </div>
+
+        <h4>Productos</h4>
+        <table class="table" id="productosTable">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- initial empty -->
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-sm btn-outline-primary mb-3" id="addRow">Agregar producto</button>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Crear</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<template id="rowTemplate">
+    <tr>
+        <td>
+            <select name="productoIds" class="form-select">
+                <option value="">-- seleccionar --</option>
+                @foreach (var pr in productos)
+                {
+                    <option value="@pr.idProducto">@pr.descripcion (@pr.precio)</option>
+                }
+            </select>
+        </td>
+        <td>
+            <input name="cantidades" type="number" min="1" value="1" class="form-control" />
+        </td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger removeRow">Quitar</button>
+        </td>
+    </tr>
+</template>
+
+<script>
+    document.getElementById('addRow').addEventListener('click', function(){
+        var tpl = document.getElementById('rowTemplate');
+        var clone = tpl.content.cloneNode(true);
+        document.querySelector('#productosTable tbody').appendChild(clone);
+    });
+
+    document.addEventListener('click', function(e){
+        if (e.target && e.target.classList.contains('removeRow')){
+            e.target.closest('tr').remove();
+        }
+    });
+</script>

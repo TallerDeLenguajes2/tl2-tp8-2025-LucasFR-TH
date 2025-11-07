@@ -1,0 +1,49 @@
+@model List<espacioPresupuestos.Presupuesto>
+
+@{
+    ViewData["Title"] = "Presupuestos";
+}
+
+<div class="container mt-3">
+    <h2>Presupuestos</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Nuevo Presupuesto</a>
+    </p>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">No hay presupuestos registrados.</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Destinatario</th>
+                    <th>Fecha</th>
+                    <th class="text-end">Cantidad</th>
+                    <th class="text-end">Monto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.idPresupuesto</td>
+                        <td>@p.nombreDestinatario</td>
+                        <td>@p.fechaCreacion.ToString("g")</td>
+                        <td class="text-end">@p.CantidadProductos()</td>
+                        <td class="text-end">@p.MontoPresupuesto().ToString("N2")</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@p.idPresupuesto" class="btn btn-sm btn-info">Detalles</a>
+                            <a asp-action="Edit" asp-route-id="@p.idPresupuesto" class="btn btn-sm btn-secondary">Editar</a>
+                            <a asp-action="Delete" asp-route-id="@p.idPresupuesto" class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

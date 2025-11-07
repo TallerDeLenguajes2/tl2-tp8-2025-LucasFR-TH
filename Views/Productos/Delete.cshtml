@@ -1,0 +1,28 @@
+@model espacioProductos.Producto
+
+@{
+    ViewData["Title"] = "Eliminar Producto";
+}
+
+<div class="container mt-3">
+    <h2>Eliminar Producto</h2>
+
+    <div class="mb-3">
+        <label class="form-label">ID</label>
+        <div>@Model.idProducto</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Descripción</label>
+        <div>@Model.descripcion</div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Precio</label>
+        <div>@Model.precio</div>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="idProducto" />
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

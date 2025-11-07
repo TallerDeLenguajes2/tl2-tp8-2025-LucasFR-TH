@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj": {}
+    "f:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj": {}
   },
   "projects": {
-    "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj": {
+    "f:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj",
+        "projectUniqueName": "f:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj",
         "projectName": "tl2-tp8-2025-LucasFR-TH",
-        "projectPath": "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj",
+        "projectPath": "f:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\tl2-tp8-2025-LucasFR-TH.csproj",
         "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
-        "outputPath": "F:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\obj\\",
+        "outputPath": "f:\\PROGRAMACION\\TALLER 2\\tp8\\tl2-tp8-2025-LucasFR-TH\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config"

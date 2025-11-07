@@ -1,0 +1,98 @@
+@model espacioPresupuestos.Presupuesto
+
+@{
+    ViewData["Title"] = "Editar Presupuesto";
+    var productos = ViewBag.Productos as List<espacioProductos.Producto> ?? new List<espacioProductos.Producto>();
+}
+
+<div class="container mt-3">
+    <h2>Editar Presupuesto #@Model.idPresupuesto</h2>
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" name="id" value="@Model.idPresupuesto" />
+        <div class="mb-3">
+            <label class="form-label">Destinatario</label>
+            <input name="nombreDestinatario" value="@Model.nombreDestinatario" class="form-control" />
+        </div>
+
+        <h4>Productos</h4>
+        <table class="table" id="productosTable">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.detalle != null)
+                {
+                    foreach (var d in Model.detalle)
+                    {
+                        <tr>
+                            <td>
+                                <select name="productoIds" class="form-select">
+                                    <option value="">-- seleccionar --</option>
+                                    @{
+                                        foreach (var pr in productos)
+                                        {
+                                            var sel = pr.idProducto == d.producto.idProducto ? " selected" : "";
+                                            @Html.Raw($"<option value=\"{pr.idProducto}\"{sel}>{pr.descripcion} ({pr.precio})</option>")
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <input name="cantidades" type="number" min="1" value="@d.cantidad" class="form-control" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger removeRow">Quitar</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-sm btn-outline-primary mb-3" id="addRow">Agregar producto</button>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<template id="rowTemplate">
+    <tr>
+        <td>
+            <select name="productoIds" class="form-select">
+                <option value="">-- seleccionar --</option>
+                @foreach (var pr in productos)
+                {
+                    <option value="@pr.idProducto">@pr.descripcion (@pr.precio)</option>
+                }
+            </select>
+        </td>
+        <td>
+            <input name="cantidades" type="number" min="1" value="1" class="form-control" />
+        </td>
+        <td>
+            <button type="button" class="btn btn-sm btn-danger removeRow">Quitar</button>
+        </td>
+    </tr>
+</template>
+
+<script>
+    document.getElementById('addRow').addEventListener('click', function(){
+        var tpl = document.getElementById('rowTemplate');
+        var clone = tpl.content.cloneNode(true);
+        document.querySelector('#productosTable tbody').appendChild(clone);
+    });
+
+    document.addEventListener('click', function(e){
+        if (e.target && e.target.classList.contains('removeRow')){
+            e.target.closest('tr').remove();
+        }
+    });
+</script>
