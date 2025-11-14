@@ -36,21 +36,21 @@
                 {
                     <tr>
                         <td>
-                            <select name="Productos[@i].productoId" class="form-select">
+                            <select name="Productos[@i].IdProducto" class="form-select">
                                 <option value="">-- seleccionar --</option>
                                 @{
                                     foreach (var pr in productos)
                                     {
-                                        var sel = pr.idProducto == (Model?.Productos?[i]?.productoId ?? 0) ? " selected" : "";
+                                        var sel = pr.idProducto == (Model?.Productos?[i]?.IdProducto ?? 0) ? " selected" : "";
                                         @Html.Raw($"<option value=\"{pr.idProducto}\"{sel}>{pr.descripcion} ({pr.precio})</option>")
                                     }
                                 }
                             </select>
-                            <span asp-validation-for="Productos[@i].productoId" class="text-danger"></span>
+                            <span asp-validation-for="Productos[@i].IdProducto" class="text-danger"></span>
                         </td>
                         <td>
-                            <input name="Productos[@i].cantidad" value="@(Model?.Productos?[i]?.cantidad ?? 0)" class="form-control" />
-                            <span asp-validation-for="Productos[@i].cantidad" class="text-danger"></span>
+                            <input name="Productos[@i].Cantidad" value="@(Model?.Productos?[i]?.Cantidad ?? 0)" class="form-control" />
+                            <span asp-validation-for="Productos[@i].Cantidad" class="text-danger"></span>
                         </td>
                         <td>
                             <button type="button" class="btn btn-sm btn-danger removeRow">Quitar</button>
@@ -94,7 +94,7 @@
         // build select with options
         var select = clone.querySelector('.template-producto');
         var productos = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(productos.Select(p => new { p.idProducto, p.descripcion, p.precio })));
-        select.name = `Productos[${index}].productoId`;
+        select.name = `Productos[${index}].IdProducto`;
         productos.forEach(function(p){
             var opt = document.createElement('option');
             opt.value = p.idProducto;
@@ -103,7 +103,7 @@
         });
 
         var cantidad = clone.querySelector('.template-cantidad');
-        cantidad.name = `Productos[${index}].cantidad`;
+        cantidad.name = `Productos[${index}].Cantidad`;
 
         tbody.appendChild(clone);
     }
@@ -118,8 +118,8 @@
             rows.forEach(function(row, idx){
                 var sel = row.querySelector('select');
                 var inp = row.querySelector('input[type="number"]');
-                if (sel) sel.name = `Productos[${idx}].productoId`;
-                if (inp) inp.name = `Productos[${idx}].cantidad`;
+                if (sel) sel.name = `Productos[${idx}].IdProducto`;
+                if (inp) inp.name = `Productos[${idx}].Cantidad`;
             });
         }
     });

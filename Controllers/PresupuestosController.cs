@@ -57,8 +57,8 @@ public class PresupuestosController : Controller
                 if (p == null) continue;
                 var pd = new PresupuestoDetalle
                 {
-                    producto = new Producto { idProducto = p.productoId },
-                    cantidad = p.cantidad
+                    producto = new Producto { idProducto = p.IdProducto },
+                    cantidad = p.Cantidad
                 };
                 presupuesto.detalle.Add(pd);
             }
@@ -92,8 +92,8 @@ public class PresupuestosController : Controller
             {
                 vm.Productos.Add(new ViewModels.AgregarProductoViewModel
                 {
-                    productoId = d.producto?.idProducto ?? 0,
-                    cantidad = d.cantidad,
+                    IdProducto = d.producto?.idProducto ?? 0,
+                    Cantidad = d.cantidad,
                     ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prodRepo.GetAll(), "idProducto", "descripcion", d.producto?.idProducto)
                 });
             }
@@ -115,7 +115,7 @@ public class PresupuestosController : Controller
             {
                 foreach (var p in viewModel.Productos)
                 {
-                    p.ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prodRepo.GetAll(), "idProducto", "descripcion", p.productoId);
+                    p.ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prodRepo.GetAll(), "idProducto", "descripcion", p.IdProducto);
                 }
             }
             return View(viewModel);
@@ -136,8 +136,8 @@ public class PresupuestosController : Controller
                 if (p == null) continue;
                 presupuesto.detalle.Add(new PresupuestoDetalle
                 {
-                    producto = new Producto { idProducto = p.productoId },
-                    cantidad = p.cantidad
+                    producto = new Producto { idProducto = p.IdProducto },
+                    cantidad = p.Cantidad
                 });
             }
         }
