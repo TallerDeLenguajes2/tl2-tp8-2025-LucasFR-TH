@@ -10,15 +10,15 @@
 
     <form asp-action="Create" method="post">
         <div class="mb-3">
-            <label asp-for="nombreDestinatario" class="form-label">Destinatario</label>
-            <input asp-for="nombreDestinatario" class="form-control" />
-            <span asp-validation-for="nombreDestinatario" class="text-danger"></span>
+            <label asp-for="NombreDestinatario" class="form-label">Destinatario</label>
+            <input asp-for="NombreDestinatario" class="form-control" />
+            <span asp-validation-for="NombreDestinatario" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="fechaCreacion" class="form-label">Fecha de creación</label>
-            <input asp-for="fechaCreacion" class="form-control" type="datetime-local" />
-            <span asp-validation-for="fechaCreacion" class="text-danger"></span>
+            <label asp-for="FechaCreacion" class="form-label">Fecha de creación</label>
+            <input asp-for="FechaCreacion" class="form-control" type="datetime-local" />
+            <span asp-validation-for="FechaCreacion" class="text-danger"></span>
         </div>
 
         <h4>Productos</h4>

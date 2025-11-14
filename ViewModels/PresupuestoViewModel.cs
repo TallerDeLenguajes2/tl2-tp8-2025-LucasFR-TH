@@ -13,7 +13,7 @@ namespace tl2_tp8_2025_LucasFR_TH.ViewModels
         [Display(Name = "Nombre o Email del Destinatario")]
         [Required(ErrorMessage = "El nombre o email es obligatorio.")]
         // [EmailAddress(ErrorMessage = "El formato del email no es válido.")]
-        public string NombreDestinatario { get; set; }
+    public string NombreDestinatario { get; set; } = string.Empty;
 
         // Validación: Requerido y tipo de dato
         [Display(Name = "Fecha de Creación")]

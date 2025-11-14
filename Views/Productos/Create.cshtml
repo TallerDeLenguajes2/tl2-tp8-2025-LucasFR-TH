@@ -9,14 +9,14 @@
 
     <form asp-action="Create" method="post">
         <div class="mb-3">
-            <label asp-for="descripcion" class="form-label">Descripción</label>
-            <input asp-for="descripcion" class="form-control" />
-            <span asp-validation-for="descripcion" class="text-danger"></span>
+            <label asp-for="Descripcion" class="form-label">Descripción</label>
+            <input asp-for="Descripcion" class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="precio" class="form-label">Precio</label>
-            <input asp-for="precio" class="form-control" />
-            <span asp-validation-for="precio" class="text-danger"></span>
+            <label asp-for="Precio" class="form-label">Precio</label>
+            <input asp-for="Precio" class="form-control" />
+            <span asp-validation-for="Precio" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Crear</button>
         <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

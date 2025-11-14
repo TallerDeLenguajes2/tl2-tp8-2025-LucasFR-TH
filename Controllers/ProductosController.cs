@@ -37,8 +37,8 @@ public class ProductosController : Controller
 
         var producto = new espacioProductos.Producto
         {
-            descripcion = viewModel.descripcion ?? string.Empty,
-            precio = viewModel.precio
+            descripcion = viewModel.Descripcion ?? string.Empty,
+            precio = (int)viewModel.Precio
         };
 
         productoRepository.Create(producto);
@@ -57,14 +57,14 @@ public class ProductosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Edit(int id, ViewModels.ProductoViewModel viewModel)
     {
-        if (id != viewModel.idProducto) return BadRequest();
+        if (id != viewModel.IdProducto) return BadRequest();
         if (!ModelState.IsValid) return View(viewModel);
 
         var producto = new espacioProductos.Producto
         {
-            idProducto = viewModel.idProducto,
-            descripcion = viewModel.descripcion ?? string.Empty,
-            precio = viewModel.precio
+            idProducto = viewModel.IdProducto,
+            descripcion = viewModel.Descripcion ?? string.Empty,
+            precio = (int)viewModel.Precio
         };
 
         productoRepository.Update(id, producto);

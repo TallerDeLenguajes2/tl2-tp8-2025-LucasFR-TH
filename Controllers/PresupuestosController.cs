@@ -26,7 +26,7 @@ public class PresupuestosController : Controller
         ViewBag.Productos = prodRepo.GetAll();
         var vm = new ViewModels.PresupuestoViewModel
         {
-            fechaCreacion = DateTime.Now
+            FechaCreacion = DateTime.Now
         };
         return View(vm);
     }
@@ -45,8 +45,8 @@ public class PresupuestosController : Controller
 
         var presupuesto = new Presupuesto
         {
-            nombreDestinatario = viewModel.nombreDestinatario,
-            fechaCreacion = viewModel.fechaCreacion,
+            nombreDestinatario = viewModel.NombreDestinatario,
+            fechaCreacion = viewModel.FechaCreacion,
             detalle = new List<PresupuestoDetalle>()
         };
 
@@ -80,9 +80,9 @@ public class PresupuestosController : Controller
         // map to viewmodel
         var vm = new ViewModels.PresupuestoViewModel
         {
-            idPresupuesto = presupuesto.idPresupuesto,
-            nombreDestinatario = presupuesto.nombreDestinatario,
-            fechaCreacion = presupuesto.fechaCreacion,
+            IdPresupuesto = presupuesto.idPresupuesto,
+            NombreDestinatario = presupuesto.nombreDestinatario,
+            FechaCreacion = presupuesto.fechaCreacion,
             Productos = new List<ViewModels.AgregarProductoViewModel>()
         };
 
@@ -124,8 +124,8 @@ public class PresupuestosController : Controller
         var presupuesto = new Presupuesto
         {
             idPresupuesto = id,
-            nombreDestinatario = viewModel.nombreDestinatario,
-            fechaCreacion = viewModel.fechaCreacion,
+            nombreDestinatario = viewModel.NombreDestinatario,
+            fechaCreacion = viewModel.FechaCreacion,
             detalle = new List<PresupuestoDetalle>()
         };
 

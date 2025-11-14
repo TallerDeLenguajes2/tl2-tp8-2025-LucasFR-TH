@@ -11,7 +11,7 @@ namespace tl2_tp8_2025_LucasFR_TH.ViewModels
         // Validación: Máximo 250 caracteres. Es opcional por defecto si no tiene [Required]
         [Display(Name = "Descripción del Producto")]
         [StringLength(250, ErrorMessage = "La descripción no puede superar los 250 caracteres.")]
-        public string Descripcion { get; set; }
+    public string Descripcion { get; set; } = string.Empty;
 
         // Validación: Requerido y debe ser positivo
         [Display(Name = "Precio Unitario")]
