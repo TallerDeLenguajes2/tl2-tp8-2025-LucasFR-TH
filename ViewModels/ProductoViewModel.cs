@@ -1,17 +1,22 @@
+
 using System.ComponentModel.DataAnnotations;
 
-namespace tl2_tp8_2025_LucasFR_TH.ViewModels;
-
-public class ProductoViewModel
+namespace tl2_tp8_2025_LucasFR_TH.ViewModels
 {
-    public int idProducto { get; set; }
+    public class ProductoViewModel
+    {
+        // Se incluye Id para la acción de EDICIÓN
+        public int IdProducto { get; set; }
 
-    // Descripción: opcional, máximo 250 caracteres
-    [StringLength(250, ErrorMessage = "La descripción no puede tener más de 250 caracteres")]
-    public string? descripcion { get; set; }
+        // Validación: Máximo 250 caracteres. Es opcional por defecto si no tiene [Required]
+        [Display(Name = "Descripción del Producto")]
+        [StringLength(250, ErrorMessage = "La descripción no puede superar los 250 caracteres.")]
+        public string Descripcion { get; set; }
 
-    // Precio: requerido y debe ser mayor a 0
-    [Required(ErrorMessage = "El precio es requerido")]
-    [Range(1, int.MaxValue, ErrorMessage = "El precio debe ser mayor a 0")]
-    public int precio { get; set; }
+        // Validación: Requerido y debe ser positivo
+        [Display(Name = "Precio Unitario")]
+        [Required(ErrorMessage = "El precio es obligatorio.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser un valor positivo.")]
+        public decimal Precio { get; set; }
+    }
 }
