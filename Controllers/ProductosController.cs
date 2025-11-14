@@ -30,18 +30,22 @@ public class ProductosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Create(ViewModels.ProductoViewModel viewModel)
     {
+        // 1. CHEQUEO DE SEGURIDAD DEL SERVIDOR
         if (!ModelState.IsValid)
         {
+            // Si falla: Devolvemos el ViewModel con los datos y errores a la Vista
             return View(viewModel);
         }
 
-        var producto = new espacioProductos.Producto
+        // 2. SI ES VÁLIDO: Mapeo Manual de VM a Modelo de Dominio
+        var nuevoProducto = new espacioProductos.Producto
         {
             descripcion = viewModel.Descripcion ?? string.Empty,
             precio = (int)viewModel.Precio
         };
 
-        productoRepository.Create(producto);
+        // 3. Llamada al Repositorio
+        productoRepository.Create(nuevoProducto);
         return RedirectToAction(nameof(Index));
     }
 
@@ -50,24 +54,42 @@ public class ProductosController : Controller
     {
         var producto = productoRepository.GetById(id);
         if (producto == null) return NotFound();
-        return View(producto);
+        
+        // Mapear el modelo de dominio al ViewModel
+        var viewModel = new ViewModels.ProductoViewModel
+        {
+            IdProducto = producto.idProducto,
+            Descripcion = producto.descripcion,
+            Precio = producto.precio
+        };
+        
+        return View(viewModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Edit(int id, ViewModels.ProductoViewModel viewModel)
     {
+        // Validar que el ID de la URL coincida con el del ViewModel
         if (id != viewModel.IdProducto) return BadRequest();
-        if (!ModelState.IsValid) return View(viewModel);
-
-        var producto = new espacioProductos.Producto
+        
+        // 1. CHEQUEO DE SEGURIDAD DEL SERVIDOR
+        if (!ModelState.IsValid)
         {
-            idProducto = viewModel.IdProducto,
+            // Si falla: Devolvemos el ViewModel con los datos y errores a la Vista
+            return View(viewModel);
+        }
+
+        // 2. Mapeo Manual de VM a Modelo de Dominio
+        var productoAEditar = new espacioProductos.Producto
+        {
+            idProducto = viewModel.IdProducto,  // Necesario para el UPDATE
             descripcion = viewModel.Descripcion ?? string.Empty,
             precio = (int)viewModel.Precio
         };
 
-        productoRepository.Update(id, producto);
+        // 3. Llamada al Repositorio
+        productoRepository.Update(id, productoAEditar);
         return RedirectToAction(nameof(Index));
     }
 
