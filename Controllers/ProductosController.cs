@@ -23,17 +23,23 @@ public class ProductosController : Controller
     [HttpGet]
     public IActionResult Create()
     {
-        return View();
+        return View(new ViewModels.ProductoViewModel());
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(Producto producto)
+    public IActionResult Create(ViewModels.ProductoViewModel viewModel)
     {
         if (!ModelState.IsValid)
         {
-            return View(producto);
+            return View(viewModel);
         }
+
+        var producto = new espacioProductos.Producto
+        {
+            descripcion = viewModel.descripcion ?? string.Empty,
+            precio = viewModel.precio
+        };
 
         productoRepository.Create(producto);
         return RedirectToAction(nameof(Index));
@@ -49,10 +55,17 @@ public class ProductosController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(int id, Producto producto)
+    public IActionResult Edit(int id, ViewModels.ProductoViewModel viewModel)
     {
-        if (id != producto.idProducto) return BadRequest();
-        if (!ModelState.IsValid) return View(producto);
+        if (id != viewModel.idProducto) return BadRequest();
+        if (!ModelState.IsValid) return View(viewModel);
+
+        var producto = new espacioProductos.Producto
+        {
+            idProducto = viewModel.idProducto,
+            descripcion = viewModel.descripcion ?? string.Empty,
+            precio = viewModel.precio
+        };
 
         productoRepository.Update(id, producto);
         return RedirectToAction(nameof(Index));

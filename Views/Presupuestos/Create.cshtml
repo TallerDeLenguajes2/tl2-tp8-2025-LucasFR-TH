@@ -1,4 +1,4 @@
-@model espacioPresupuestos.Presupuesto
+@model tl2_tp8_2025_LucasFR_TH.ViewModels.PresupuestoViewModel
 
 @{
     ViewData["Title"] = "Crear Presupuesto";
@@ -10,8 +10,15 @@
 
     <form asp-action="Create" method="post">
         <div class="mb-3">
-            <label class="form-label">Destinatario</label>
-            <input name="nombreDestinatario" class="form-control" />
+            <label asp-for="nombreDestinatario" class="form-label">Destinatario</label>
+            <input asp-for="nombreDestinatario" class="form-control" />
+            <span asp-validation-for="nombreDestinatario" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="fechaCreacion" class="form-label">Fecha de creación</label>
+            <input asp-for="fechaCreacion" class="form-control" type="datetime-local" />
+            <span asp-validation-for="fechaCreacion" class="text-danger"></span>
         </div>
 
         <h4>Productos</h4>
@@ -24,7 +31,31 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- initial empty -->
+                @for (int i = 0; i < (Model?.Productos?.Count ?? 0); i++)
+                {
+                    <tr>
+                        <td>
+                            <select name="Productos[@i].productoId" class="form-select">
+                                <option value="">-- seleccionar --</option>
+                                @{
+                                    foreach (var pr in productos)
+                                    {
+                                        var sel = pr.idProducto == Model.Productos[i].productoId ? " selected" : "";
+                                        @Html.Raw($"<option value=\"{pr.idProducto}\"{sel}>{pr.descripcion} ({pr.precio})</option>")
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="Productos[@i].productoId" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <input name="Productos[@i].cantidad" value="@Model.Productos[i].cantidad" class="form-control" />
+                            <span asp-validation-for="Productos[@i].cantidad" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-danger removeRow">Quitar</button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
 
@@ -40,16 +71,10 @@
 <template id="rowTemplate">
     <tr>
         <td>
-            <select name="productoIds" class="form-select">
-                <option value="">-- seleccionar --</option>
-                @foreach (var pr in productos)
-                {
-                    <option value="@pr.idProducto">@pr.descripcion (@pr.precio)</option>
-                }
-            </select>
+            <select class="form-select template-producto"></select>
         </td>
         <td>
-            <input name="cantidades" type="number" min="1" value="1" class="form-control" />
+            <input type="number" min="1" value="1" class="form-control template-cantidad" />
         </td>
         <td>
             <button type="button" class="btn btn-sm btn-danger removeRow">Quitar</button>
@@ -58,15 +83,47 @@
 </template>
 
 <script>
-    document.getElementById('addRow').addEventListener('click', function(){
+    // helper to create a new indexed row for model binding: Productos[index].property
+    function addRowIndexed() {
+        var tbody = document.querySelector('#productosTable tbody');
+        var index = tbody.querySelectorAll('tr').length;
         var tpl = document.getElementById('rowTemplate');
         var clone = tpl.content.cloneNode(true);
-        document.querySelector('#productosTable tbody').appendChild(clone);
-    });
+
+        // build select with options
+        var select = clone.querySelector('.template-producto');
+        var productos = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(productos.Select(p => new { p.idProducto, p.descripcion, p.precio })));
+        select.name = `Productos[${index}].productoId`;
+        productos.forEach(function(p){
+            var opt = document.createElement('option');
+            opt.value = p.idProducto;
+            opt.text = p.descripcion + ' (' + p.precio + ')';
+            select.appendChild(opt);
+        });
+
+        var cantidad = clone.querySelector('.template-cantidad');
+        cantidad.name = `Productos[${index}].cantidad`;
+
+        tbody.appendChild(clone);
+    }
+
+    document.getElementById('addRow').addEventListener('click', addRowIndexed);
 
     document.addEventListener('click', function(e){
         if (e.target && e.target.classList.contains('removeRow')){
             e.target.closest('tr').remove();
+            // reindex names after removal
+            var rows = document.querySelectorAll('#productosTable tbody tr');
+            rows.forEach(function(row, idx){
+                var sel = row.querySelector('select');
+                var inp = row.querySelector('input[type="number"]');
+                if (sel) sel.name = `Productos[${idx}].productoId`;
+                if (inp) inp.name = `Productos[${idx}].cantidad`;
+            });
         }
     });
 </script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

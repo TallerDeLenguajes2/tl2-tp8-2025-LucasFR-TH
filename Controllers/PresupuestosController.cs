@@ -24,28 +24,41 @@ public class PresupuestosController : Controller
         // traer productos para selector
         var prodRepo = new ProductoRepository();
         ViewBag.Productos = prodRepo.GetAll();
-        return View();
+        var vm = new ViewModels.PresupuestoViewModel
+        {
+            fechaCreacion = DateTime.Now
+        };
+        return View(vm);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(string nombreDestinatario, int[] productoIds, int[] cantidades)
+    public IActionResult Create(ViewModels.PresupuestoViewModel viewModel)
     {
+        var prodRepo = new ProductoRepository();
+        if (!ModelState.IsValid)
+        {
+            // repoblar select lists inside Productos entries if needed
+            ViewBag.Productos = prodRepo.GetAll();
+            return View(viewModel);
+        }
+
         var presupuesto = new Presupuesto
         {
-            nombreDestinatario = nombreDestinatario,
-            fechaCreacion = DateTime.Now,
+            nombreDestinatario = viewModel.nombreDestinatario,
+            fechaCreacion = viewModel.fechaCreacion,
             detalle = new List<PresupuestoDetalle>()
         };
 
-        if (productoIds != null && cantidades != null)
+        if (viewModel.Productos != null)
         {
-            for (int i = 0; i < productoIds.Length && i < cantidades.Length; i++)
+            foreach (var p in viewModel.Productos)
             {
+                if (p == null) continue;
                 var pd = new PresupuestoDetalle
                 {
-                    producto = new Producto { idProducto = productoIds[i] },
-                    cantidad = cantidades[i]
+                    producto = new Producto { idProducto = p.productoId },
+                    cantidad = p.cantidad
                 };
                 presupuesto.detalle.Add(pd);
             }
@@ -63,31 +76,69 @@ public class PresupuestosController : Controller
 
         var prodRepo = new ProductoRepository();
         ViewBag.Productos = prodRepo.GetAll();
-        return View(presupuesto);
+
+        // map to viewmodel
+        var vm = new ViewModels.PresupuestoViewModel
+        {
+            idPresupuesto = presupuesto.idPresupuesto,
+            nombreDestinatario = presupuesto.nombreDestinatario,
+            fechaCreacion = presupuesto.fechaCreacion,
+            Productos = new List<ViewModels.AgregarProductoViewModel>()
+        };
+
+        if (presupuesto.detalle != null)
+        {
+            foreach (var d in presupuesto.detalle)
+            {
+                vm.Productos.Add(new ViewModels.AgregarProductoViewModel
+                {
+                    productoId = d.producto?.idProducto ?? 0,
+                    cantidad = d.cantidad,
+                    ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prodRepo.GetAll(), "idProducto", "descripcion", d.producto?.idProducto)
+                });
+            }
+        }
+
+        return View(vm);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(int id, string nombreDestinatario, int[] productoIds, int[] cantidades)
+    public IActionResult Edit(int id, ViewModels.PresupuestoViewModel viewModel)
     {
+        var prodRepo = new ProductoRepository();
+        if (!ModelState.IsValid)
+        {
+            // repoblar dropdowns for the form before returning
+            ViewBag.Productos = prodRepo.GetAll();
+            if (viewModel.Productos != null)
+            {
+                foreach (var p in viewModel.Productos)
+                {
+                    p.ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prodRepo.GetAll(), "idProducto", "descripcion", p.productoId);
+                }
+            }
+            return View(viewModel);
+        }
+
         var presupuesto = new Presupuesto
         {
             idPresupuesto = id,
-            nombreDestinatario = nombreDestinatario,
-            fechaCreacion = DateTime.Now,
+            nombreDestinatario = viewModel.nombreDestinatario,
+            fechaCreacion = viewModel.fechaCreacion,
             detalle = new List<PresupuestoDetalle>()
         };
 
-        if (productoIds != null && cantidades != null)
+        if (viewModel.Productos != null)
         {
-            for (int i = 0; i < productoIds.Length && i < cantidades.Length; i++)
+            foreach (var p in viewModel.Productos)
             {
-                var pd = new PresupuestoDetalle
+                if (p == null) continue;
+                presupuesto.detalle.Add(new PresupuestoDetalle
                 {
-                    producto = new Producto { idProducto = productoIds[i] },
-                    cantidad = cantidades[i]
-                };
-                presupuesto.detalle.Add(pd);
+                    producto = new Producto { idProducto = p.productoId },
+                    cantidad = p.cantidad
+                });
             }
         }
 
