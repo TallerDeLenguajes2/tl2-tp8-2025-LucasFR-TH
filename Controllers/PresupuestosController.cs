@@ -6,16 +6,20 @@ using espacioPresupuestos;
 using repositorioProducto;
 using espacioProductos;
 using espacioPresupuestoDetalle;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace tl2_tp8_2025_LucasFR_TH.Controllers;
 
 public class PresupuestosController : Controller
 {
     private PresupuestosRepository presupuestosRepository;
+    // Necesitamos el repositorio de Productos para llenar el dropdown
+    private ProductoRepository productoRepository;
 
     public PresupuestosController()
     {
         presupuestosRepository = new PresupuestosRepository();
+        productoRepository = new ProductoRepository();
     }
 
     [HttpGet]
@@ -67,6 +71,53 @@ public class PresupuestosController : Controller
         presupuestosRepository.Create(presupuesto);
         return RedirectToAction(nameof(Index));
     }
+
+    // ==================== TAREA 3.1: Agregar Producto a Presupuesto ====================
+    
+    // GET: Presupuestos/AgregarProducto
+    [HttpGet]
+    public IActionResult AgregarProducto(int id)
+    {
+        // 1. Obtener los productos para el SelectList
+        List<Producto> productos = productoRepository.GetAll();
+        
+        // 2. Crear el ViewModel
+        ViewModels.AgregarProductoViewModel model = new ViewModels.AgregarProductoViewModel
+        {
+            IdPresupuesto = id,  // Pasamos el ID del presupuesto actual
+            // 3. Crear el SelectList
+            ListaProductos = new SelectList(productos, "idProducto", "descripcion")
+        };
+        
+        return View(model);
+    }
+
+    // POST: Presupuestos/AgregarProducto
+    // ❗ El Método CLAVE para la validación de la cantidad
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult AgregarProducto(ViewModels.AgregarProductoViewModel model)
+    {
+        // 1. Chequeo de Seguridad para la Cantidad
+        if (!ModelState.IsValid)
+        {
+            // LÓGICA CRÍTICA DE RECARGA: Si falla la validación,
+            // debemos recargar el SelectList porque se pierde en el POST.
+            var productos = productoRepository.GetAll();
+            model.ListaProductos = new SelectList(productos, "idProducto", "descripcion");
+            
+            // Devolvemos el modelo con los errores y el dropdown recargado
+            return View(model);
+        }
+
+        // 2. Si es VÁLIDO: Llamamos al repositorio para guardar la relación
+        presupuestosRepository.AddProducto(model.IdPresupuesto, model.IdProducto, model.Cantidad);
+
+        // 3. Redirigimos al detalle del presupuesto
+        return RedirectToAction(nameof(Details), new { id = model.IdPresupuesto });
+    }
+
+    // ==================== Fin de Tarea 3.1 ====================
 
     [HttpGet]
     public IActionResult Edit(int id)

@@ -9,75 +9,79 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = tl2_tp8_2025_LucasFR_TH
 build_property.RootNamespace = tl2_tp8_2025_LucasFR_TH
-build_property.ProjectDir = f:\PROGRAMACION\TALLER 2\tp8\tl2-tp8-2025-LucasFR-TH\
+build_property.ProjectDir = F:\PROGRAMACION\TALLER 2\tp8\tl2-tp8-2025-LucasFR-TH\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = f:\PROGRAMACION\TALLER 2\tp8\tl2-tp8-2025-LucasFR-TH
+build_property.MSBuildProjectDirectory = F:\PROGRAMACION\TALLER 2\tp8\tl2-tp8-2025-LucasFR-TH
 build_property._RazorSourceGeneratorDebug = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Home/Index.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Home/Privacy.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Create.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/AgregarProducto.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlc3VwdWVzdG9zXEFncmVnYXJQcm9kdWN0by5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlc3VwdWVzdG9zXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Delete.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlc3VwdWVzdG9zXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Details.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlc3VwdWVzdG9zXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Edit.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlc3VwdWVzdG9zXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Index.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Presupuestos/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlc3VwdWVzdG9zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Create.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9zXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Delete.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9zXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Edit.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9zXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Index.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Productos/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdG9zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Shared/Error.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Shared/_ValidationScriptsPartial.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/_ViewImports.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/_ViewStart.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[f:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Shared/_Layout.cshtml]
+[F:/PROGRAMACION/TALLER 2/tp8/tl2-tp8-2025-LucasFR-TH/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-5fc8i6s5r0
