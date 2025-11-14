@@ -1,8 +1,13 @@
 namespace repositorioProducto;
 using espacioProductos;
+using tl2_tp8_2025_LucasFR_TH.Interfaces;
 using Microsoft.Data.Sqlite;
 
-public class ProductoRepository
+/// <summary>
+/// Implementación de repositorio para Productos.
+/// Maneja todas las operaciones CRUD contra la base de datos.
+/// </summary>
+public class ProductoRepository : IProductoRepository
 {
     private string cadenaConexion = "Data Source = Db/Tienda.db";
 

@@ -3,11 +3,16 @@ namespace repositorioPresupuesto;
 using espacioPresupuestos;
 using espacioPresupuestoDetalle;
 using espacioProductos;
+using tl2_tp8_2025_LucasFR_TH.Interfaces;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 
-public class PresupuestosRepository
+/// <summary>
+/// Implementación de repositorio para Presupuestos.
+/// Maneja todas las operaciones CRUD contra la base de datos.
+/// </summary>
+public class PresupuestosRepository : IPresupuestoRepository
 {
     private string cadenaConexion = "Data Source = Db/Tienda.db";
     
