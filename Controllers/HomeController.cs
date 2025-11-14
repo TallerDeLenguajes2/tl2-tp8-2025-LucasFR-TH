@@ -23,6 +23,14 @@ public class HomeController : Controller
         return View();
     }
 
+    /// <summary>
+    /// Acción que se ejecuta cuando un usuario autenticado intenta acceder a un recurso sin permisos.
+    /// </summary>
+    public IActionResult AccesoDenegado()
+    {
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

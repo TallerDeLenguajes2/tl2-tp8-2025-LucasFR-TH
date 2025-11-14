@@ -1,22 +1,17 @@
 using espacioUsuarios;
 using tl2_tp8_2025_LucasFR_TH.Interfaces;
+using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 
 namespace repositorioUsuario;
 
 /// <summary>
 /// Implementación del repositorio de Usuarios.
-/// Actualmente usa datos hardcodeados, puede ser modificado para usar BD.
+/// Lee datos desde la base de datos SQLite.
 /// </summary>
 public class UserRepository : IUserRepository
 {
-    // Lista de usuarios precargados (en producción vendrían de BD)
-    private static readonly List<Usuario> usuarios = new()
-    {
-        new Usuario(1, "admin", "admin123", "Administrador"),
-        new Usuario(2, "cliente1", "pass123", "Cliente"),
-        new Usuario(3, "cliente2", "pass456", "Cliente")
-    };
+    private string cadenaConexion = "Data Source = Db/Tienda.db";
 
     /// <summary>
     /// Obtiene un usuario mediante credenciales de login.
@@ -26,11 +21,31 @@ public class UserRepository : IUserRepository
         if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             return null;
 
-        // Busca el usuario que coincida con username y password
-        var usuario = usuarios.FirstOrDefault(u =>
-            u.Username == username && u.Password == password);
+        string query = "SELECT Id, Nombre, User, Pass, Rol FROM usuarios WHERE User = @username AND Pass = @password LIMIT 1";
 
-        return usuario;
+        using var connection = new SqliteConnection(cadenaConexion);
+        connection.Open();
+
+        var command = new SqliteCommand(query, connection);
+        command.Parameters.Add(new SqliteParameter("@username", username));
+        command.Parameters.Add(new SqliteParameter("@password", password));
+
+        using var reader = command.ExecuteReader();
+
+        if (reader.Read())
+        {
+            var usuario = new Usuario
+            {
+                IdUsuario = Convert.ToInt32(reader["Id"]),
+                Username = reader["User"].ToString() ?? string.Empty,
+                Password = reader["Pass"].ToString() ?? string.Empty,
+                Rol = reader["Rol"].ToString() ?? string.Empty
+            };
+
+            return usuario;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -38,7 +53,30 @@ public class UserRepository : IUserRepository
     /// </summary>
     public Usuario GetById(int id)
     {
-        return usuarios.FirstOrDefault(u => u.IdUsuario == id);
+        string query = "SELECT Id, Nombre, User, Pass, Rol FROM usuarios WHERE Id = @id LIMIT 1";
+
+        using var connection = new SqliteConnection(cadenaConexion);
+        connection.Open();
+
+        var command = new SqliteCommand(query, connection);
+        command.Parameters.Add(new SqliteParameter("@id", id));
+
+        using var reader = command.ExecuteReader();
+
+        if (reader.Read())
+        {
+            var usuario = new Usuario
+            {
+                IdUsuario = Convert.ToInt32(reader["Id"]),
+                Username = reader["User"].ToString() ?? string.Empty,
+                Password = reader["Pass"].ToString() ?? string.Empty,
+                Rol = reader["Rol"].ToString() ?? string.Empty
+            };
+
+            return usuario;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -49,6 +87,29 @@ public class UserRepository : IUserRepository
         if (string.IsNullOrEmpty(username))
             return null;
 
-        return usuarios.FirstOrDefault(u => u.Username == username);
+        string query = "SELECT Id, Nombre, User, Pass, Rol FROM usuarios WHERE User = @username LIMIT 1";
+
+        using var connection = new SqliteConnection(cadenaConexion);
+        connection.Open();
+
+        var command = new SqliteCommand(query, connection);
+        command.Parameters.Add(new SqliteParameter("@username", username));
+
+        using var reader = command.ExecuteReader();
+
+        if (reader.Read())
+        {
+            var usuario = new Usuario
+            {
+                IdUsuario = Convert.ToInt32(reader["Id"]),
+                Username = reader["User"].ToString() ?? string.Empty,
+                Password = reader["Pass"].ToString() ?? string.Empty,
+                Rol = reader["Rol"].ToString() ?? string.Empty
+            };
+
+            return usuario;
+        }
+
+        return null;
     }
 }
