@@ -1,33 +1,46 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using repositorioPresupuesto;
+using tl2_tp8_2025_LucasFR_TH.Interfaces;
 using espacioPresupuestos;
-using repositorioProducto;
 using espacioProductos;
 using espacioPresupuestoDetalle;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace tl2_tp8_2025_LucasFR_TH.Controllers;
 
+/// <summary>
+/// Controlador para gestionar Presupuestos.
+/// Implementa patrón de inyección de dependencias.
+/// </summary>
 public class PresupuestosController : Controller
 {
-    private PresupuestosRepository presupuestosRepository;
-    // Necesitamos el repositorio de Productos para llenar el dropdown
-    private ProductoRepository productoRepository;
+    private readonly IPresupuestoRepository presupuestosRepository;
+    private readonly IProductoRepository productoRepository;
+    private readonly IAuthenticationService authenticationService;
 
-    public PresupuestosController()
+    /// <summary>
+    /// Constructor con inyección de dependencias.
+    /// </summary>
+    public PresupuestosController(
+        IPresupuestoRepository presupuestosRepository,
+        IProductoRepository productoRepository,
+        IAuthenticationService authenticationService)
     {
-        presupuestosRepository = new PresupuestosRepository();
-        productoRepository = new ProductoRepository();
+        this.presupuestosRepository = presupuestosRepository;
+        this.productoRepository = productoRepository;
+        this.authenticationService = authenticationService;
     }
 
     [HttpGet]
     public IActionResult Create()
     {
+        // Aplicamos el chequeo de permisos para crear (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         // traer productos para selector
-        var prodRepo = new ProductoRepository();
-        ViewBag.Productos = prodRepo.GetAll();
+        ViewBag.Productos = productoRepository.GetAll();
         var vm = new ViewModels.PresupuestoViewModel
         {
             FechaCreacion = DateTime.Now
@@ -39,11 +52,14 @@ public class PresupuestosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Create(ViewModels.PresupuestoViewModel viewModel)
     {
-        var prodRepo = new ProductoRepository();
+        // Aplicamos el chequeo de permisos para crear (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         if (!ModelState.IsValid)
         {
             // repoblar select lists inside Productos entries if needed
-            ViewBag.Productos = prodRepo.GetAll();
+            ViewBag.Productos = productoRepository.GetAll();
             return View(viewModel);
         }
 
@@ -78,6 +94,10 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult AgregarProducto(int id)
     {
+        // Aplicamos el chequeo de permisos para agregar (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         // 1. Obtener los productos para el SelectList
         List<Producto> productos = productoRepository.GetAll();
         
@@ -98,6 +118,10 @@ public class PresupuestosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult AgregarProducto(ViewModels.AgregarProductoViewModel model)
     {
+        // Aplicamos el chequeo de permisos para agregar (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         // 1. Chequeo de Seguridad para la Cantidad
         if (!ModelState.IsValid)
         {
@@ -122,11 +146,14 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult Edit(int id)
     {
+        // Aplicamos el chequeo de permisos para editar (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         var presupuesto = presupuestosRepository.GetById(id);
         if (presupuesto == null) return NotFound();
 
-        var prodRepo = new ProductoRepository();
-        ViewBag.Productos = prodRepo.GetAll();
+        ViewBag.Productos = productoRepository.GetAll();
 
         // map to viewmodel
         var vm = new ViewModels.PresupuestoViewModel
@@ -145,7 +172,7 @@ public class PresupuestosController : Controller
                 {
                     IdProducto = d.producto?.idProducto ?? 0,
                     Cantidad = d.cantidad,
-                    ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prodRepo.GetAll(), "idProducto", "descripcion", d.producto?.idProducto)
+                    ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(productoRepository.GetAll(), "idProducto", "descripcion", d.producto?.idProducto)
                 });
             }
         }
@@ -157,16 +184,19 @@ public class PresupuestosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Edit(int id, ViewModels.PresupuestoViewModel viewModel)
     {
-        var prodRepo = new ProductoRepository();
+        // Aplicamos el chequeo de permisos para editar (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         if (!ModelState.IsValid)
         {
             // repoblar dropdowns for the form before returning
-            ViewBag.Productos = prodRepo.GetAll();
+            ViewBag.Productos = productoRepository.GetAll();
             if (viewModel.Productos != null)
             {
                 foreach (var p in viewModel.Productos)
                 {
-                    p.ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(prodRepo.GetAll(), "idProducto", "descripcion", p.IdProducto);
+                    p.ListaProductos = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(productoRepository.GetAll(), "idProducto", "descripcion", p.IdProducto);
                 }
             }
             return View(viewModel);
@@ -200,6 +230,10 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult Delete(int id)
     {
+        // Aplicamos el chequeo de permisos para eliminar (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         var presupuesto = presupuestosRepository.GetById(id);
         if (presupuesto == null) return NotFound();
         return View(presupuesto);
@@ -209,6 +243,10 @@ public class PresupuestosController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult DeleteConfirmed(int id)
     {
+        // Aplicamos el chequeo de permisos para eliminar (solo Administrador)
+        var securityCheck = CheckAdminPermissions();
+        if (securityCheck != null) return securityCheck;
+
         presupuestosRepository.Delete(id);
         return RedirectToAction(nameof(Index));
     }
@@ -216,13 +254,40 @@ public class PresupuestosController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        List<Presupuesto> presupuestos = presupuestosRepository.GetAll();
-        return View(presupuestos);
+        // Comprobación de si está logueado
+        if (!authenticationService.IsAuthenticated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        // Verifica Nivel de acceso que necesite validar
+        if (authenticationService.HasAccessLevel("Administrador") || authenticationService.HasAccessLevel("Cliente"))
+        {
+            // Si es válido entra sino vuelve a AccesoDenegado
+            List<Presupuesto> presupuestos = presupuestosRepository.GetAll();
+            return View(presupuestos);
+        }
+        else
+        {
+            return RedirectToAction(nameof(AccesoDenegado));
+        }
     }
 
     [HttpGet]
     public IActionResult Details(int id)
     {
+        // Comprobación de si está logueado
+        if (!authenticationService.IsAuthenticated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        // Verifica Nivel de acceso que necesite validar
+        if (!(authenticationService.HasAccessLevel("Administrador") || authenticationService.HasAccessLevel("Cliente")))
+        {
+            return RedirectToAction(nameof(AccesoDenegado));
+        }
+
         var presupuesto = presupuestosRepository.GetById(id);
         if (presupuesto == null)
         {
@@ -232,4 +297,36 @@ public class PresupuestosController : Controller
         return View(presupuesto);
     }
 
+    /// <summary>
+    /// Método privado que verifica permisos de administrador.
+    /// Redirige al login si no está autenticado.
+    /// Redirige a AccesoDenegado si no tiene rol de Administrador.
+    /// </summary>
+    private IActionResult CheckAdminPermissions()
+    {
+        // 1. No logueado? -> vuelve al login
+        if (!authenticationService.IsAuthenticated())
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        // 2. No es Administrador? -> Da Error
+        if (!authenticationService.HasAccessLevel("Administrador"))
+        {
+            // Llamamos a AccesoDenegado (llama a la vista correspondiente de Presupuestos)
+            return RedirectToAction(nameof(AccesoDenegado));
+        }
+
+        return null; // Permiso concedido
+    }
+
+    /// <summary>
+    /// Acción para mostrar página de acceso denegado.
+    /// Se utiliza cuando un usuario intenta acceder sin los permisos necesarios.
+    /// </summary>
+    [HttpGet]
+    public IActionResult AccesoDenegado()
+    {
+        return View();
+    }
 }
