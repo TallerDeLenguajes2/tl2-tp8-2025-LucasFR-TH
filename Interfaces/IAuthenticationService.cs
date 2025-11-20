@@ -3,48 +3,116 @@ using espacioUsuarios;
 namespace tl2_tp8_2025_LucasFR_TH.Interfaces;
 
 /// <summary>
-/// Interfaz de servicio de autenticación y autorización.
-/// Maneja el flujo de login/logout y control de acceso basado en roles.
+/// INTERFAZ DE SERVICIO DE AUTENTICACIÓN - Contrato para gestión de sesiones y autorización
+/// 
+/// RESPONSABILIDAD: Definir métodos que centraliza la lógica de autenticación
+/// 
+/// IMPLEMENTACIÓN: servicioAutenticacion.AuthenticationService
+/// 
+/// USO: Se inyecta en ProductosController, PresupuestosController y LoginController
+/// 
+/// SEGURIDAD: Este patrón permite cambiar la implementación sin afectar los controladores
+/// (P. ej., pasar de sesiones a JWT tokens sin cambiar controladores)
 /// </summary>
 public interface IAuthenticationService
 {
     /// <summary>
-    /// Intenta autenticar un usuario con username y password.
-    /// Si es exitoso, establece la sesión.
+    /// MÉTODO: Login
+    /// 
+    /// PROPÓSITO: Autenticar un usuario y establecer su sesión
+    /// 
+    /// PARÁMETROS:
+    /// - username: Nombre de usuario
+    /// - password: Contraseña del usuario
+    /// 
+    /// FLUJO:
+    /// 1. Consultar BD por credenciales
+    /// 2. Si existen → Guardar datos en sesión y retornar true
+    /// 3. Si no existen → Retornar false
+    /// 
+    /// DATOS ALMACENADOS EN SESIÓN:
+    /// - Username
+    /// - Rol (Administrador/Cliente)
+    /// - ID del usuario
+    /// 
+    /// RETORNA: true si login exitoso, false si falló
     /// </summary>
-    /// <param name="username">Nombre de usuario.</param>
-    /// <param name="password">Contraseña del usuario.</param>
-    /// <returns>true si la autenticación fue exitosa, false si falló.</returns>
     bool Login(string username, string password);
 
     /// <summary>
-    /// Cierra la sesión del usuario actual.
-    /// Limpia todas las variables de sesión relacionadas.
+    /// MÉTODO: Logout
+    /// 
+    /// PROPÓSITO: Cerrar la sesión del usuario actual
+    /// 
+    /// FUNCIONALIDAD:
+    /// - Elimina TODAS las variables de sesión
+    /// - Limpia completamente los datos de autenticación
+    /// - Après Logout, IsAuthenticated() retornará false
     /// </summary>
     void Logout();
 
     /// <summary>
-    /// Verifica si hay un usuario actualmente autenticado (sesión válida).
+    /// MÉTODO: IsAuthenticated
+    /// 
+    /// PROPÓSITO: Verificar si existe un usuario autenticado en la sesión actual
+    /// 
+    /// LÓGICA:
+    /// - Lee la sesión buscando el username
+    /// - SI existe → Retorna true
+    /// - SI no existe → Retorna false
+    /// 
+    /// USO EN CONTROLADORES:
+    /// if (!_authService.IsAuthenticated()) 
+    ///     return RedirectToAction("Index", "Login");
+    /// 
+    /// RETORNA: true si hay sesión válida, false si no
     /// </summary>
-    /// <returns>true si existe una sesión de usuario válida, false si no.</returns>
     bool IsAuthenticated();
 
     /// <summary>
-    /// Obtiene el usuario actualmente autenticado.
+    /// MÉTODO: GetCurrentUser
+    /// 
+    /// PROPÓSITO: Obtener el objeto Usuario completo del usuario autenticado
+    /// 
+    /// RETORNA: Objeto Usuario (con todos sus atributos) si está autenticado
+    ///          null si no hay usuario autenticado
+    /// 
+    /// USO: Cuando necesitas acceso a propiedades del usuario (ID, nombre, etc.)
     /// </summary>
-    /// <returns>Objeto Usuario si está autenticado, null si no.</returns>
     Usuario GetCurrentUser();
 
     /// <summary>
-    /// Verifica si el usuario actual tiene un rol específico.
+    /// MÉTODO: HasAccessLevel
+    /// 
+    /// PROPÓSITO: Verificar si el usuario actual tiene un rol específico
+    /// 
+    /// PARÁMETRO:
+    /// - requiredAccessLevel: El rol a verificar (ej: "Administrador", "Cliente")
+    /// 
+    /// LÓGICA:
+    /// 1. Verificar si IsAuthenticated()
+    /// 2. Si SÍ → Comparar rol del usuario con el requerido
+    /// 3. Si NO → Retornar false
+    /// 
+    /// USO EN CONTROLADORES:
+    /// if (!_authService.HasAccessLevel("Administrador")) 
+    ///     return RedirectToAction("AccesoDenegado");
+    /// 
+    /// RETORNA: true si el usuario tiene el rol, false si no
+    /// 
+    /// NOTA: La comparación es EXACTA (case-sensitive)
     /// </summary>
-    /// <param name="requiredAccessLevel">Rol requerido (ej. "Administrador").</param>
-    /// <returns>true si el usuario tiene el rol requerido, false si no.</returns>
     bool HasAccessLevel(string requiredAccessLevel);
 
     /// <summary>
-    /// Obtiene el rol del usuario actualmente autenticado.
+    /// MÉTODO: GetCurrentUserRole
+    /// 
+    /// PROPÓSITO: Obtener el rol del usuario autenticado
+    /// 
+    /// RETORNA: String con el rol (ej: "Administrador", "Cliente")
+    ///          String.Empty si no está autenticado
+    /// 
+    /// USO: Para mostrar el rol en UI, logs, auditoría, etc.
     /// </summary>
-    /// <returns>Rol del usuario o string.Empty si no está autenticado.</returns>
     string GetCurrentUserRole();
 }
