@@ -1,3 +1,10 @@
+using Microsoft.AspNetCore.Http;
+using tl2_tp8_2025_LucasFR_TH.Interfaces;
+using repositorioProducto;
+using repositorioPresupuesto;
+using repositorioUsuario;
+using servicioAutenticacion;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // ● Servicios de Sesión: 

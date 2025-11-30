@@ -30,6 +30,8 @@ public class PresupuestosController : Controller
         this.authenticationService = authenticationService;
     }
 
+    /// Al inicio de las acciones que cambian datos (Create, Edit, Delete, AddDetalle), aplique la lógica del punto 9 (solo Administrador).
+
     [HttpGet]
     public IActionResult Create()
     {
@@ -249,6 +251,12 @@ public class PresupuestosController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    /// <summary>
+    /// Al inicio de Index y Details, implemente el chequeo para ambos roles, redirigiendo a AccesoDenegado solo si no es ni Administrador ni Cliente: 
+    /// 1. Si !_authService.IsAuthenticated(), redirigir a /Login/Index. 
+    /// 2. Si !(_authService.HasAccessLevel("Administrador") || _authService.HasAccessLevel("Cliente")), redirigir a Presupuestos/AccesoDenegado.
+    /// </summary>
+
     [HttpGet]
     public IActionResult Index()
     {
@@ -317,6 +325,7 @@ public class PresupuestosController : Controller
         return null; // Permitido
     }
 
+    // Agregue la acción public IActionResult AccesoDenegado() en el PresupuestosController.cs.
     [HttpGet]
     public IActionResult AccesoDenegado()
     {

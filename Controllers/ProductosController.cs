@@ -37,6 +37,10 @@ public class ProductosController : Controller
     /// - Requiere: Autenticado + Rol Administrador
     /// - Si falla: Redirección al login o AccesoDenegado
     /// </summary>
+    /// 
+    /// Al inicio de TODAS las acciones de ProductosController (Index, Details, Create, Edit, Delete), aplique la siguiente lógica: 
+    /// 1. Si !_authService.IsAuthenticated(), redirigir a /Login/Index. 
+    /// 2. Si !_authService.HasAccessLevel("Administrador"), redirigir a Productos/AccesoDenegado.
     public IActionResult Index()
     {
         // Aplicamos el chequeo de seguridad
