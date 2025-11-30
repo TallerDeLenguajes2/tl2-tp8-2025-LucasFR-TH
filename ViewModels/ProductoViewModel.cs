@@ -1,4 +1,4 @@
-
+// ViewModels/ProductoViewModel.cs: Objeto para manejar la creación y edición de Productos.
 using System.ComponentModel.DataAnnotations;
 
 namespace tl2_tp8_2025_LucasFR_TH.ViewModels
@@ -9,11 +9,13 @@ namespace tl2_tp8_2025_LucasFR_TH.ViewModels
         public int IdProducto { get; set; }
 
         // Validación: Máximo 250 caracteres. Es opcional por defecto si no tiene [Required]
+        /// En ProductoViewModel: ○ Descripcion: Es opcional, pero debe tener una longitud máxima de 250 caracteres ([StringLength]). ○ 
         [Display(Name = "Descripción del Producto")]
         [StringLength(250, ErrorMessage = "La descripción no puede superar los 250 caracteres.")]
     public string Descripcion { get; set; } = string.Empty;
 
         // Validación: Requerido y debe ser positivo
+        /// Precio: Debe ser requerido ([Required]) y debe ser un valor positivo (mayor a 0) ([Range]).
         [Display(Name = "Precio Unitario")]
         [Required(ErrorMessage = "El precio es obligatorio.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser un valor positivo.")]

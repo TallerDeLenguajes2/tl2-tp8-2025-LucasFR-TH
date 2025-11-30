@@ -3,30 +3,6 @@ using tl2_tp8_2025_LucasFR_TH.Interfaces;
 using espacioProductos;
 
 namespace tl2_tp8_2025_LucasFR_TH.Controllers;
-
-/// <summary>
-/// CONTROLADOR DE PRODUCTOS - Gestión de catálogo de productos
-/// 
-/// RESPONSABILIDAD: Manejar todas las operaciones CRUD sobre productos
-/// (Create, Read, Update, Delete)
-/// 
-/// SEGURIDAD: 
-/// - TODAS las acciones requieren autenticación (IsAuthenticated)
-/// - TODAS las acciones requieren rol de ADMINISTRADOR (HasAccessLevel)
-/// - Si no está autenticado → Redirige a /Login/Index
-/// - Si está autenticado pero NO es Admin → Redirige a /Productos/AccesoDenegado
-/// 
-/// ARQUITECTURA: 
-/// - Patrón: Inyección de Dependencias (constructor recibe interfaces)
-/// - Seguridad: CSRF Protection ([ValidateAntiForgeryToken])
-/// - Validación: Server-side ModelState.IsValid
-/// - Mapeo: ViewModel ↔ Modelo de Dominio (manual)
-/// 
-/// FLUJO DE AUTORIZACIÓN EN CADA ACCIÓN:
-/// 1. Se llama CheckAdminPermissions() al inicio
-/// 2. Si retorna null → pasa seguridad, continúa ejecución
-/// 3. Si retorna IActionResult → redirección, aborta ejecución
-/// </summary>
 public class ProductosController : Controller
 {
     // ========== DEPENDENCIAS INYECTADAS ==========
@@ -184,34 +160,6 @@ public class ProductosController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    /// <summary>
-    /// MÉTODO PRIVADO: CheckAdminPermissions
-    /// 
-    /// PROPÓSITO: Verificar permisos de ADMINISTRADOR antes de ejecutar una acción
-    /// 
-    /// LÓGICA DE SEGURIDAD (dos niveles):
-    /// 
-    /// 1️⃣ PRIMER CHEQUEO: ¿El usuario está AUTENTICADO?
-    ///    - Llama a IsAuthenticated() que verifica si existe sesión válida
-    ///    - SI NO → Redirige a /Login/Index
-    ///    - SI SÍ → Continúa al siguiente chequeo
-    /// 
-    /// 2️⃣ SEGUNDO CHEQUEO: ¿El usuario tiene rol ADMINISTRADOR?
-    ///    - Llama a HasAccessLevel("Administrador") que verifica el rol en sesión
-    ///    - SI NO → Redirige a AccesoDenegado (en este mismo controlador)
-    ///    - SI SÍ → Retorna null (permiso concedido)
-    /// 
-    /// RETORNA: 
-    /// - IActionResult (redirección): Si falla algún chequeo
-    /// - null: Si ambos chequeos pasan (permiso concedido)
-    /// 
-    /// EJEMPLO DE USO EN CADA ACCIÓN:
-    ///     var securityCheck = CheckAdminPermissions();
-    ///     if (securityCheck != null) return securityCheck;  // Si falla, salir
-    ///     // ... resto del código (solo se ejecuta si pasó seguridad)
-    /// 
-    /// SEGURIDAD: Este patrón es crítico para proteger operaciones CRUD
-    /// </summary>
     private IActionResult CheckAdminPermissions()
     {
         // ⭐ CHEQUEO 1: ¿Está autenticado?
@@ -238,19 +186,6 @@ public class ProductosController : Controller
         return null;
     }
 
-    /// <summary>
-    /// ACCIÓN: AccesoDenegado (GET)
-    /// 
-    /// PROPÓSITO: Mostrar página de error cuando autorización falla
-    /// 
-    /// USO: Se invoca desde CheckAdminPermissions() cuando el usuario:
-    ///      - Está autenticado PERO no tiene rol de Administrador
-    /// 
-    /// UX: Muestra mensaje amigable explicando la restricción y opciones
-    ///     (volver atrás, cerrar sesión, etc.)
-    /// 
-    /// VISTA: Views/Productos/AccesoDenegado.cshtml
-    /// </summary>
     [HttpGet]
     public IActionResult AccesoDenegado()
     {

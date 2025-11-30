@@ -3,6 +3,9 @@ using tl2_tp8_2025_LucasFR_TH.Interfaces;
 using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
 
+// Cree la clase UsuarioRepository.cs que implemente IUserRepository y contenga la lógica para buscar al usuario en la tabla Usuarios por credenciales.
+
+
 namespace repositorioUsuario;
 
 /// <summary>

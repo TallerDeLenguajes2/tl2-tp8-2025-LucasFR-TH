@@ -1,5 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// ● Servicios de Sesión: 
+    // ○ Agregue: builder.Services.AddHttpContextAccessor(); 
+    // ○ Agregue: builder.Services.AddSession(...) (con las opciones recomendadas, como IdleTimeout).
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

@@ -9,29 +9,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace tl2_tp8_2025_LucasFR_TH.Controllers;
 
-/// <summary>
-/// CONTROLADOR DE PRESUPUESTOS - Gestión de presupuestos del cliente
-/// 
-/// RESPONSABILIDAD: Manejar todas las operaciones CRUD sobre presupuestos
-/// (Create, Read, Update, Delete) y la adición de productos a presupuestos
-/// 
-/// SEGURIDAD CON ROL DUAL:
-/// 
-/// ACCIONES DE LECTURA (Index, Details):
-///   - Requieren: Autenticado + (Administrador O Cliente)
-///   - Deniegan acceso solo si no es ni Admin ni Cliente
-///   - Permite que ambos roles vean presupuestos
-/// 
-/// ACCIONES DE MODIFICACIÓN (Create, Edit, Delete, AgregarProducto):
-///   - Requieren: Autenticado + Administrador ÚNICAMENTE
-///   - Deniegan acceso a clientes que intentan crear/editar/eliminar
-/// 
-/// REDIRECCIONAMIENTOS:
-///   - No autenticado → /Login/Index
-///   - Autenticado pero sin permisos → /Presupuestos/AccesoDenegado
-/// 
-/// PATRÓN: Inyección de Dependencias + ViewModel Pattern + Validación Server-side
-/// </summary>
 public class PresupuestosController : Controller
 {
     // ========== DEPENDENCIAS INYECTADAS ==========
@@ -294,6 +271,9 @@ public class PresupuestosController : Controller
         }
     }
 
+//     Implemente la acción Details (Detalle) en el PresupuestosController. Esta vista debe mostrar:
+// 1. El encabezado del Presupuesto.
+// 2. El listado de todos los Productos asociados, utilizando la lógica relacional ya implementada en su Repositorio de Presupuestos.
     [HttpGet]
     public IActionResult Details(int id)
     {
@@ -318,32 +298,6 @@ public class PresupuestosController : Controller
         return View(presupuesto);
     }
 
-    /// <summary>
-    /// MÉTODO PRIVADO: CheckAdminPermissions
-    /// 
-    /// PROPÓSITO: Verificar permisos de ADMINISTRADOR únicamente
-    /// (Usado en acciones de MODIFICACIÓN: Create, Edit, Delete, AgregarProducto)
-    /// 
-    /// LÓGICA DE SEGURIDAD (dos niveles):
-    /// 
-    /// 1️⃣ PRIMER CHEQUEO: ¿Está AUTENTICADO?
-    ///    - SI NO → Redirige a /Login/Index
-    ///    - SI SÍ → Continúa
-    /// 
-    /// 2️⃣ SEGUNDO CHEQUEO: ¿Tiene rol ADMINISTRADOR?
-    ///    - SI NO → Redirige a /Presupuestos/AccesoDenegado
-    ///    - SI SÍ → Retorna null (permitido)
-    /// 
-    /// DIFERENCIA CON Index/Details:
-    /// - Index/Details: Permiten Admin OR Cliente
-    /// - CheckAdminPermissions: Solo permite Admin
-    /// 
-    /// RETORNA:
-    /// - IActionResult (redirección): Si falla el chequeo
-    /// - null: Si el usuario es Admin
-    /// 
-    /// SEGURIDAD: Protege operaciones que modifican datos
-    /// </summary>
     private IActionResult CheckAdminPermissions()
     {
         // ⭐ CHEQUEO 1: ¿Está autenticado?
@@ -363,20 +317,6 @@ public class PresupuestosController : Controller
         return null; // Permitido
     }
 
-    /// <summary>
-    /// ACCIÓN: AccesoDenegado (GET)
-    /// 
-    /// PROPÓSITO: Mostrar página informativa cuando autorización falla
-    /// 
-    /// CASOS:
-    /// 1. Usuario Cliente intenta crear presupuesto
-    /// 2. Usuario Cliente intenta editar presupuesto
-    /// 3. Usuario Cliente intenta agregar productos a presupuesto
-    /// 
-    /// UX: Muestra que Clientes solo pueden ver presupuestos, no crearlos
-    /// 
-    /// VISTA: Views/Presupuestos/AccesoDenegado.cshtml
-    /// </summary>
     [HttpGet]
     public IActionResult AccesoDenegado()
     {

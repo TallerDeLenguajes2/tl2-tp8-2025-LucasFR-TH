@@ -1,5 +1,7 @@
 using espacioUsuarios;
 
+/// Interfaz de Seguridad: Defina la interfaz IAuthenticationService.cs con los métodos: Login(user, pass), Logout(), IsAuthenticated() y HasAccessLevel(rol).
+
 namespace tl2_tp8_2025_LucasFR_TH.Interfaces;
 
 /// <summary>
